@@ -1,0 +1,288 @@
+#include <Keypad.h> // keypad kütüphanesi, kendimiz import ediyoruz.
+int ledPin1=11; //birinci led
+int ledPin2=10; // ikinci led 
+int ledPin3=9; // üçüncü led 
+int ledPin4=8; // dördüncü led
+int ledPin5=7; // beşinci led 
+int ledPin6=6; // altıncı led
+int ledPin7=5; // yedinci led
+int ledPin8=4; // sekizinci led
+const int buzzer = 3;
+//tuş durumlarını belirledik hepsi sıfırdan başlıyor
+int tus1durum = 0;
+int tus4durum = 0;
+int tus7durum = 0;
+const byte numRows= 4; // keypadde bulunan satır sayısı
+const byte numCols= 4; // keypad bulunan sütun sayısı
+// keypad tuşlarının yapısını bilgisayara tanıtalım:
+char keymap[numRows][numCols]= 
+{
+{'1', '2', '3', 'A'}, 
+{'4', '5', '6', 'B'}, 
+{'7', '8', '9', 'C'},
+{'*', '0', '#', 'D'}
+};
+// Arduinoda hangi bacağa hangi bağlantı geleceğini belirleyelim
+byte rowPins[numRows] = {13,12,A0,A1}; 
+byte colPins[numCols]= {A2,A3,A4,A5}; 
+// keypadi set ediyoruz
+Keypad myKeypad= Keypad(makeKeymap(keymap), rowPins, colPins, numRows, 
+numCols);
+void setup()
+{
+Serial.begin(9600);
+pinMode(ledPin1,OUTPUT); // led1 pinini çıkış olarak belirttik
+pinMode(ledPin2,OUTPUT); // led2 pinini çıkış olarak belirttik
+pinMode(ledPin3,OUTPUT); // led3 pinini çıkış olarak belirttik
+pinMode(ledPin4,OUTPUT); // led4 pinini çıkış olarak belirttik
+pinMode(ledPin5,OUTPUT); // led5 pinini çıkış olarak belirttik
+pinMode(ledPin6,OUTPUT); // led6 pinini çıkış olarak belirttik
+pinMode(ledPin7,OUTPUT); // led7 pinini çıkış olarak belirttik
+pinMode(ledPin8,OUTPUT); // led8 pinini çıkış olarak belirttik
+pinMode(buzzer, OUTPUT); // Buzzerı da tanımladık
+}
+//Buraya kadar 1. madde yapılmıştır. 
+//Şimdi looplar içinde diğer maddeleri yapacağız. 
+void loop() //döngü demektir
+{
+char tus = myKeypad.getKey();
+// if (tus != NO_KEY)
+//aşağıda 2. maddede bahsi geçen kodu tanımladık.
+if (tus == '1') {
+tus1durum++;
+delay(300);
+Serial.println(tus1durum);
+tus1();
+}
+if (tus != '1') {
+tus1durum == 0;
+}
+if (tus == '2') {
+//Serial.println("2");
+tus2();
+}
+if (tus == '3') {
+//Serial.println("3");
+tus3();
+}
+if (tus == '4') {
+//Serial.println("4");
+tus4();
+}
+if (tus == '5') {
+//Serial.println("5");
+tus5();
+}
+if (tus == '6') {
+//Serial.println("6");
+tus6();
+}
+if (tus == '7') {
+//Serial.println("7");
+tus7durum++;
+tus7();
+}
+if (tus == '8') {
+//Serial.println("8");
+tus8();
+}
+if (tus == '9') {
+tus9();
+}
+}
+void tus1() {
+if (tus1durum == 3) {
+digitalWrite(ledPin1, HIGH);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+}
+if (tus1durum > 3) {
+tus1durum = 1;
+digitalWrite(ledPin1, LOW);
+}
+}
+void tus2() {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+delay(250);
+int i;
+for (i = 4; i < 12; i++) {
+digitalWrite(i, HIGH);
+delay(250);
+}
+}
+void tus3() {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+delay(500);
+int i;
+for (i = 12; i > 3; i--) {
+digitalWrite(i, HIGH);
+delay(250);
+}
+}
+void tus4() {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+delay(250);
+// Binary sayaç
+for (int j = 0; j <= 255; j++) {
+digitalWrite(ledPin1, (j & B10000000) ? HIGH : LOW);
+digitalWrite(ledPin2, (j & B01000000) ? HIGH : LOW);
+digitalWrite(ledPin3, (j & B00100000) ? HIGH : LOW);
+digitalWrite(ledPin4, (j & B00010000) ? HIGH : LOW);
+digitalWrite(ledPin5, (j & B00001000) ? HIGH : LOW);
+digitalWrite(ledPin6, (j & B00000100) ? HIGH : LOW);
+digitalWrite(ledPin7, (j & B00000010) ? HIGH : LOW);
+digitalWrite(ledPin8, (j & B00000001) ? HIGH : LOW);
+delay(250);
+}
+}
+void tus5() {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+delay(500);
+digitalWrite(ledPin1, HIGH);
+digitalWrite(ledPin3, HIGH);
+digitalWrite(ledPin5, HIGH);
+digitalWrite(ledPin7, HIGH);
+}
+void tus6() {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+delay(500);
+digitalWrite(ledPin2, HIGH);
+digitalWrite(ledPin4, HIGH);
+digitalWrite(ledPin6, HIGH);
+digitalWrite(ledPin8, HIGH);
+}
+void tus7() {
+/*Serial.print("tus7durum = ");
+Serial.println(tus7durum);*/
+if (tus7durum == 1) {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+delay(250);
+digitalWrite(ledPin1, HIGH);
+}
+if (tus7durum == 2) {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, HIGH);
+delay(250);
+}
+if (tus7durum == 3) {
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, HIGH);
+delay(250);
+}
+if (tus7durum == 4) {
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, HIGH);
+delay(250);
+}
+if (tus7durum == 5) {
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, HIGH);
+delay(250);
+}
+if (tus7durum == 6) {
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, HIGH);
+delay(250);
+}
+if (tus7durum == 7) {
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, HIGH);
+delay(250);
+}
+if (tus7durum == 8) {
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, HIGH);
+delay(250);
+}
+if (tus7durum > 7) {
+tus7durum = 0;
+}
+}
+void tus8() {
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+digitalWrite(buzzer, HIGH);
+delay(1000);
+digitalWrite(buzzer, LOW);
+}
+void tus9() {
+tus1durum = 0;
+tus4durum = 0;
+tus7durum = 0;
+digitalWrite(ledPin1, HIGH);
+digitalWrite(ledPin2, HIGH);
+digitalWrite(ledPin3, HIGH);
+digitalWrite(ledPin4, HIGH);
+digitalWrite(ledPin5, HIGH);
+digitalWrite(ledPin6, HIGH);
+digitalWrite(ledPin7, HIGH);
+digitalWrite(ledPin8, HIGH);
+digitalWrite(buzzer, HIGH);
+delay(500);
+digitalWrite(buzzer, LOW);
+delay(500);
+digitalWrite(ledPin1, LOW);
+digitalWrite(ledPin2, LOW);
+digitalWrite(ledPin3, LOW);
+digitalWrite(ledPin4, LOW);
+digitalWrite(ledPin5, LOW);
+digitalWrite(ledPin6, LOW);
+digitalWrite(ledPin7, LOW);
+digitalWrite(ledPin8, LOW);
+digitalWrite(buzzer, HIGH);
+delay(500);
+digitalWrite(buzzer, LOW);
+}
